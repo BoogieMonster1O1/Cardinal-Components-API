@@ -37,8 +37,8 @@ import dev.onyxstudios.cca.internal.base.asm.CcaAsmHelper;
 import dev.onyxstudios.cca.internal.base.asm.StaticComponentPluginBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nonnull;
@@ -68,7 +68,7 @@ public final class StaticItemComponentPlugin extends LazyDispatcher implements I
      * Creates a container factory for an item id.
      */
     public static ComponentContainer.Factory<ItemStack> createItemStackContainerFactory(Item item) {
-        Identifier itemId = Registry.ITEM.getId(item);
+        Identifier itemId = Registries.ITEM.getId(item);
         return INSTANCE.getFactoryClass(item, itemId);
     }
 
@@ -101,10 +101,10 @@ public final class StaticItemComponentPlugin extends LazyDispatcher implements I
     }
 
     public <C extends Component> void registerFor(Item item, ComponentKey<C> type, ComponentFactory<ItemStack, ? extends C> factory) {
-        if (!Iterables.contains(Registry.ITEM, item)) {
+        if (!Iterables.contains(Registries.ITEM, item)) {
             throw new IllegalStateException(item + " must be registered to Registry.ITEM before using it for component registration");
         }
-        Identifier id = Registry.ITEM.getId(item);
+        Identifier id = Registries.ITEM.getId(item);
         this.registerFor(id, type, factory);
     }
 
